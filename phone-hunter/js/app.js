@@ -1,4 +1,4 @@
-const loadPhone=async (searchText,isShowAll)=>{
+const loadPhone=async (searchText=13,isShowAll)=>{
     const res=await fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`)
 const data=await res.json()
 const phones=data.data;
@@ -41,7 +41,12 @@ phoneCard.innerHTML=`
 <div class="card-actions justify-end">
 
 
-<button class="btn btn-primary">Show Details</button>
+<button onClick="handleShowDetail('${phone.slug}');my_modal_1.showModal() " class="btn btn-primary">
+
+
+Show Details
+
+</button>
 </div>
 </div>
 
@@ -86,7 +91,7 @@ if(isLoading){
 }
 
 }
-//loadPhone()
+loadPhone()
 
  /* handle show all */
  const handleShowAll=()=>{
@@ -95,3 +100,45 @@ if(isLoading){
 
 
  }
+/* handle show deatai */
+const handleShowDetail= async(id)=>{
+//console.log("dskj",id)
+ /* load-data singale phone dat */
+const res=await fetch(`https://openapi.programming-hero.com/api/phone/${id}`)
+const data= await res.json()
+const phone=data.data;
+//console.log(data)
+showHandleModal(phone)
+
+
+
+
+
+
+
+}
+
+
+/* hadnle show deatial */
+
+const showHandleModal=(phone)=>{
+    console.log(phone)
+    const phoneName=document.getElementById('phone-name-detail')
+    phoneName.innerText=phone.name;
+
+const showContainer=document.getElementById('show-detail-container')
+showContainer.innerHTML=`
+
+<p>${phone.brand}</p>
+<img src='${phone.image}' alt=""/>
+<p class="fs-1xl">displaySize:${phone.mainFeatures?.memory}</p>
+<p>releaseData: ${phone.releaseDate}</p>
+`;
+
+
+
+    /* show modal */
+    my_modal_1.showModal() 
+
+
+}
