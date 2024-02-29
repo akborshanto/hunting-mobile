@@ -1,21 +1,23 @@
-const loadPhone=async (searchText)=>{
+const loadPhone=async (searchText,isShowAll)=>{
     const res=await fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`)
 const data=await res.json()
 const phones=data.data;
 //console.log(phones)
-displayPhone(phones)
+displayPhone(phones,isShowAll)
 }
 
-const displayPhone= phones=>{
+const displayPhone= (phones,isShowAll)=>{
 
 const phoneContainer=document.getElementById('phone-container')
 phoneContainer.textContent=" ";
 ///display data
-phones=phones.slice(0,12)
+if(!isShowAll){
+    phones=phones.slice(0,12)
+}
 /* display alll button if theare are more than 12 phones */
 const showAllButton=document.getElementById('showAllButton')
 
-if(phones.length > 10){
+if(phones.length > 10  && !isShowAll){
 showAllButton.classList.remove('hidden')
 }else{
     showAllButton.classList.add('hidden')
@@ -58,13 +60,13 @@ toggleSpinner(false)
 
 
 //////////////////////////////////
-const handleSearch =()=>{
+const handleSearch =(isShowAll)=>{
     toggleSpinner(true)
 const searchField=document.getElementById('searchField');
 const searchText=searchField.value;
 //console.log(searchText)
 
-loadPhone(searchText)
+loadPhone(searchText,isShowAll)
 
 }
 
@@ -86,4 +88,10 @@ if(isLoading){
 }
 //loadPhone()
 
+ /* handle show all */
+ const handleShowAll=()=>{
 
+    handleSearch(true)
+
+
+ }
